@@ -1,0 +1,9 @@
+#### FOLDERS ####
+node_modules
+reports
+.grunt
+release/versions
+
+#### FILES ####
+*.DS_Store
+*.swp
