@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 
   var name, latest, bannerContent, bannerContentMin, footerContent,
-      devRelease, minRelease, publicRelease, lDevRelease, lMinRelease;
+      publicRelease, lDevRelease, lMinRelease;
 
   latest = '<%= pkg.name %>';
   name = '<%= pkg.name %>-v<%= pkg.version%>';
@@ -24,9 +24,6 @@ module.exports = function(grunt) {
                   'License: <%= pkg.license %> */\n';
 
   footerContent = '\n}(exports));';
-
-  devRelease = 'release/versions/' + name + '.js';
-  minRelease = 'release/versions/' + name + '.min.js';
 
   lDevRelease = 'release/' + latest + '.js';
   lMinRelease = 'release/' + latest + '.min.js';
@@ -59,7 +56,7 @@ module.exports = function(grunt) {
           banner: bannerContentMin
         },
         src: ['css/*.css'],
-        dest: 'release/versions/' + name + '.min.css'
+        dest: 'release/' + latest + '.min.css'
       }
     },
     concat: {
@@ -78,7 +75,7 @@ module.exports = function(grunt) {
       },
       target: {
         src: ['src/*.js'],
-        dest: 'release/versions/' + name + '.js'
+        dest: 'release/' + latest + '.js'
       }
     },
     uglify: {
@@ -92,28 +89,32 @@ module.exports = function(grunt) {
       },
       target: {
         src: ['src/*.js'],
-        dest: 'release/versions/' + name + '.min.js'
+        dest: 'release/' + latest + '.min.js'
       }
     },
     copy: {
-      development: { // copy non-minified release file
-        src: devRelease,
-        dest: lDevRelease
+      versionDev: {
+        src: 'release/' + latest + '.js',
+        dest: 'release/versions/' + name + '.js'
       },
-      minified: { // copy minified release file
-        src: minRelease,
-        dest: lMinRelease
+      versionMinified: {
+        src: 'release/' + latest + '.min.js',
+        dest: 'release/versions/' + name + '.min.js'
       },
-      css: {
-        src: 'release/versions/' + name + '.min.css',
-        dest: 'release/' + latest + '.min.css'
+      versionCSS: {
+        src: 'release/' + latest + '.min.css',
+        dest: 'release/versions/' + name + '.min.css'
       },
-      public: { // copy minified file
+      publicDev: {
+        src: lDevRelease,
+        dest: publicRelease
+      },
+      publicMin: {
         src: lMinRelease,
         dest: publicRelease
       },
       publicCSS: {
-        src: 'release/versions/' + name + '.min.css',
+        src: 'release/' + latest + '.min.css',
         dest: 'public/css/' + latest + '.min.css'
       }
     },
@@ -130,9 +131,7 @@ module.exports = function(grunt) {
 
     },
     plato: {
-      options: {
-        // Task-specific options go here.
-      },
+      options: {},
       your_target: {
         files: {
           'reports': ['src/**/*.js'],
@@ -151,8 +150,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-plato');
 
-  grunt.registerTask('default', ['cssmin', 'concat', 'uglify', 'copy']);
-  grunt.registerTask('release', ['jshint', 'cssmin', 'jasmine', 'concat', 'uglify', 'copy', 'plato']);
+  grunt.registerTask('default', ['cssmin', 'concat', 'copy:publicDev', 'copy:publicCSS']);
+  grunt.registerTask('release', ['jshint', 'cssmin', 'concat', 'uglify', 'copy:publicMin', 'copy:publicCSS', 'copy:versionCSS', 'copy:versionMinified', 'copy:versionDev', 'plato']);
   grunt.registerTask('test', ['jshint', 'jasmine']);
   grunt.registerTask('lint', ['jshint']);
   grunt.registerTask('report', ['plato']);

@@ -1,4 +1,4 @@
-/*! AudioInputAnalyzer v1.0.0 - 2013-08-31 06:08:07 
+/*! AudioInputAnalyzer v1.0.0 - 2013-09-04 12:09:49 
 Vince Allen |Brooklyn, NY | vince@vinceallen.com | @vinceallenvince | License: MIT */
 
-body{background-color:#fff}
+body{background-color:#fff}.channel{position:absolute;left:0;width:1px;height:20px;background-color:gray}.channel.left{top:0}.channel.right{top:22px}.freq{position:absolute;bottom:0;width:10px;height:1px;background-color:gray}

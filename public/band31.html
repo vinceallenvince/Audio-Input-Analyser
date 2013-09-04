@@ -24,20 +24,20 @@
         document.body.appendChild(channel);
       }
 
-      for (i = 0; i < 10; i++) {
+      for (i = 0; i < 31; i++) {
         freq = document.createElement('div');
         freq.className = 'freq';
         freq.id = 'freq' + (i + 1);
-        freq.style.left = (i * 22) + 'px';
+        freq.style.left = (i * 12) + 'px';
         document.body.appendChild(freq);
         freq1.push(freq);
       }
 
-      for (i = 0; i < 10; i++) {
+      for (i = 0; i < 31; i++) {
         freq = document.createElement('div');
         freq.className = 'freq';
         freq.id = 'freq' + (i + 1);
-        freq.style.right = (i * 22) + 'px';
+        freq.style.right = (i * 12) + 'px';
         document.body.appendChild(freq);
         freq2.push(freq);
       }
@@ -52,12 +52,12 @@
         channelLeft.style.width = audioController.map(data.averageVol1, 0, 130, 0, viewportSize.width / 2) + 'px';
         channelRight.style.width = audioController.map(data.averageVol2, 0, 130, 0, viewportSize.width / 2) + 'px';
 
-        for (i = 0, max = data.BAND10Array1.length; i < max; i++) {
-          freq1[i].style.height = audioController.map(data.BAND10Array1[i], 0, 255, 0, viewportSize.height / 2) + 'px';
+        for (i = 0, max = data.BAND31Array1.length; i < max; i++) {
+          freq1[i].style.height = audioController.map(data.BAND31Array1[i], 0, 255, 0, viewportSize.height / 2) + 'px';
         }
 
-        for (i = 0, max = data.BAND10Array2.length; i < max; i++) {
-          freq2[i].style.height = audioController.map(data.BAND10Array2[i], 0, 255, 0, viewportSize.height / 2) + 'px';
+        for (i = 0, max = data.BAND31Array2.length; i < max; i++) {
+          freq2[i].style.height = audioController.map(data.BAND31Array2[i], 0, 255, 0, viewportSize.height / 2) + 'px';
         }
 
       });
