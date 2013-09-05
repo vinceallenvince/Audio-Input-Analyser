@@ -3,7 +3,7 @@ Audio Input Analyser
 
 Use the Audio Input Analyser to receive real-time audio analysis of your computer microphone's audio stream. The script uses both the getUserMedia and Web Audio APIs and is compatible in the latest version of Chrome.
 
-You can find example implentations in the 'public' folder.
+You can find examples in the 'public' folder.
 
 To get started, reference the AudioInputAnalyzer.min.js file in a &lt;script&gt; in the &lt;head&gt; of your document. Create and initialize a new AudioController. The AudioController uses pubsub to broadcast when data is ready. Subscribe to the 'meter' event and pass a callback to handle the data. 
 
@@ -24,7 +24,8 @@ To get started, reference the AudioInputAnalyzer.min.js file in a &lt;script&gt;
 
       AudioInputAnalyzer.PubSub.subscribe('meter', function(data) {
         // work with data here
-        document.body.innerHTML = 'channel1 avg volume: ' + data.averageVol1.toFixed() + '<br /> channel2 avg volume: ' + data.averageVol2.toFixed();
+        document.body.innerHTML = 'channel1 avg volume: ' + data.averageVol1.toFixed() +
+        		'<br /> channel2 avg volume: ' + data.averageVol2.toFixed();
       });
 
     </script>
