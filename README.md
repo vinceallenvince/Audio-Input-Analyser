@@ -3,7 +3,7 @@ Audio Input Analyser
 
 Use the Audio Input Analyser to receive real-time audio analysis of your computer microphone's audio stream. The script uses both the getUserMedia and Web Audio APIs and is compatible in the latest version of Chrome.
 
-You can find examples in the 'public' folder.
+You can find examples in the 'public' folder or at http://foldi.github.io/Audio-Input-Analyser/index.html
 
 To get started, reference the AudioInputAnalyzer.min.js file in a &lt;script&gt; in the &lt;head&gt; of your document. Create and initialize a new AudioController. The AudioController uses pubsub to broadcast when data is ready. Subscribe to the 'meter' event and pass a callback to handle the data. 
 
