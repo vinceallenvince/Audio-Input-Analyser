@@ -203,7 +203,7 @@ AudioController.prototype.getArrayAverage = function(array) {
 };
 
 /**
- * Returns an average based on all absilute values in the passed array.
+ * Returns an average based on all absolute values in the passed array.
  */
 AudioController.prototype.getArrayAbsoluteAverage = function(array) {
 
