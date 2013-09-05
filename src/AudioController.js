@@ -27,7 +27,7 @@ window.requestAnimFrame = (function(callback){
 })();
 
 /**
- * Typical frequencies in a 10-band spectrum setting.
+ * Typical frequencies in a 10-band spectrum.
  */
 var BAND10 = [
   31, 63, 125, 250, 500,
@@ -35,7 +35,7 @@ var BAND10 = [
 ];
 
 /**
- * Typical frequencies in a 31-band spectrum setting.
+ * Typical frequencies in a 31-band spectrum.
  */
 var BAND31 = [
   20, 25, 31, 40, 50, 63, 80, 100, 126, 160,
@@ -122,8 +122,11 @@ AudioController.prototype.handleUserMedia = function(stream) {
   this.splitter.connect(this.analyser2, 1, 0);
   this.analyser1.connect(this.meter);
 
-  // do not connect microphone to destination; will create feedback
-  //this.microphone.connect(this.context.destination);
+  /*
+   * BE CAREFUL: connecting microphone to destination may create feedback.
+   * Mute your speakers first.
+   */
+  // this.microphone.connect(this.context.destination);
 
 };
 

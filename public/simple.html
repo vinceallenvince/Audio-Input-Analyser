@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='content-type' content='text/html; charset=UTF-8' />
+  <title>Audio Input Analyser</title>
+  <script src='scripts/AudioInputAnalyzer.min.js' type='text/javascript' charset='utf-8'></script>
+  </head>
+  <body>
+    <script type='text/javascript' charset='utf-8'>
+
+      var audioController = new AudioInputAnalyzer.AudioController();
+      audioController.init();
+
+      AudioInputAnalyzer.PubSub.subscribe('meter', function(data) {
+        // work with data here
+        document.body.innerHTML = 'channel1 avg volume: ' + data.averageVol1.toFixed() + '<br /> channel2 avg volume: ' + data.averageVol2.toFixed();
+      });
+
+    </script>
+  </body>
+</html>
