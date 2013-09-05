@@ -73,6 +73,8 @@ var BAND31 = [
 
 ======
 
+If you want to build this project...
+
 A pre-commit hook is defined in /pre-commit that runs jshint. To use the hook, run the following:
 
 ln -s ../../pre-commit .git/hooks/pre-commit
