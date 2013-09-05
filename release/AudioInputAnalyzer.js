@@ -1,4 +1,4 @@
-/*! AudioInputAnalyzer v1.0.0 - 2013-09-04 12:09:49 
+/*! AudioInputAnalyzer v1.0.0 - 2013-09-04 09:09:27 
  *  Vince Allen 
  *  Brooklyn, NY 
  *  vince@vinceallen.com 
@@ -136,7 +136,7 @@ AudioController.prototype.handleUserMedia = function(stream) {
   this.analyser1.connect(this.meter);
 
   // do not connect microphone to destination; will create feedback
-  this.microphone.connect(this.context.destination);
+  //this.microphone.connect(this.context.destination);
 
 };
 

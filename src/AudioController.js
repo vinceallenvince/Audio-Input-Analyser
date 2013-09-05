@@ -123,7 +123,7 @@ AudioController.prototype.handleUserMedia = function(stream) {
   this.analyser1.connect(this.meter);
 
   // do not connect microphone to destination; will create feedback
-  this.microphone.connect(this.context.destination);
+  //this.microphone.connect(this.context.destination);
 
 };
 

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='content-type' content='text/html; charset=UTF-8' />
+  <meta name='viewport' content='user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0' />
+  <meta name='apple-mobile-web-app-capable' content='yes' />
+  <title>Audio Input Analyser</title>
+  <link href='css/burner.min.css' rel='stylesheet' type='text/css' charset='utf-8' />
+  <link href='css/flora.min.css' rel='stylesheet' type='text/css' charset='utf-8' />
+  <link href='css/AudioInputAnalyzer.min.css' rel='stylesheet' type='text/css' charset='utf-8' />
+  <script src='scripts/burner.min.js' type='text/javascript' charset='utf-8'></script>
+  <script src='scripts/flora.min.js' type='text/javascript' charset='utf-8'></script>
+  <script src='scripts/AudioInputAnalyzer.min.js' type='text/javascript' charset='utf-8'></script>
+  </head>
+  <body>
+    <script type='text/javascript' charset='utf-8'>
+
+      var world = new Burner.World(document.body, {
+        color: [0, 0, 0],
+        gravity: new Burner.Vector(),
+        c: 0
+      });
+
+      var colorPal = new Flora.ColorPalette();
+
+      colorPal.addColor({
+        min: 12,
+        max: 24,
+        startColor: [243, 76, 7],
+        endColor: [103, 36, 0]
+      });
+
+      Burner.System.init(function() {
+        this.add('Attractor', {
+          location: new Burner.Vector(Burner.System.firstWorld().width / 4, Burner.System.firstWorld().height / 2),
+          G: 0,
+          Hz: 1000,
+          angAccel: 0,
+          angVel: 0,
+          color: [214, 167, 25],
+          boxShadowColor: [214, 167, 25],
+          borderStyle: 'groove',
+          beforeStep: function() {
+            this.angle = this.G;
+          }
+        });
+        this.add('Attractor', {
+          location: new Burner.Vector(Burner.System.firstWorld().width * 0.75, Burner.System.firstWorld().height / 2),
+          G: 0,
+          Hz: 2500,
+          angAccel: 0,
+          angVel: 0,
+          color: [214, 167, 25],
+          boxShadowColor: [214, 167, 25],
+          borderStyle: 'inset',
+          beforeStep: function() {
+            this.angle = this.G;
+          }
+        });
+        for (var i = 0; i < 10; i++) {
+          var size = Burner.System.getRandomNumber(20, 30);
+          var location = new Burner.Vector(Burner.System.firstWorld().width / 2, Burner.System.firstWorld().height / 2);
+          var offset = new Burner.Vector(1, 1);
+          offset.normalize();
+          offset.rotate(Burner.System.getRandomNumber(0, 360));
+          offset.mult(Burner.System.getRandomNumber(10, 50));
+          location.add(offset);
+          this.add('Agent', {
+            location: location,
+            width: size * 0.8,
+            height: size,
+            mass: size,
+            opacity: Burner.System.map(size, 10, 50, 0.9, 0.7),
+            flocking: true,
+            color: colorPal.getColor()
+          });
+        }
+      }, world);
+
+
+
+      //
+
+      var audioController = new AudioInputAnalyzer.AudioController();
+      audioController.init();
+
+      var i, max, channel, viewportSize = audioController.getViewportSize();
+
+      for (i = 0; i < 2; i++) {
+        channel = document.createElement('div');
+        channel.className = 'channel ' + (!i ? 'left' : 'right');
+        channel.id = 'channel' + (i + 1);
+        document.body.appendChild(channel);
+      }
+
+      var channelLeft = document.getElementById('channel1'),
+          channelRight = document.getElementById('channel2');
+
+      AudioInputAnalyzer.PubSub.subscribe('meter', function(data) {
+
+        var agent = Burner.System.getAllItemsByName('Agent')[0],
+            attractor1000 = Burner.System.getAllItemsByAttribute('Hz', 1000)[0],
+            attractor2500 = Burner.System.getAllItemsByAttribute('Hz', 2500)[0];
+
+        attractor1000.G = data.BAND31Array1[17] * .25; // 17 - 1000
+        attractor2500.G = data.BAND31Array1[21] * .25; // 21 - 2500
+
+      });
+
+    </script>
+  </body>
+</html>
