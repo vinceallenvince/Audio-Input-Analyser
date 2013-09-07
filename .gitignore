@@ -1,0 +1,8 @@
+#### FOLDERS ####
+node_modules
+reports
+.grunt
+
+#### FILES ####
+*.DS_Store
+*.swp
