@@ -74,7 +74,7 @@ var BAND31 = [
 Building this project
 ======
 
-This project uses Grunt. To build the project first install the node modules.
+This project uses <a href='http://gruntjs.com'>Grunt</a>. To build the project first install the node modules.
 
 ```
 npm install
