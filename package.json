@@ -25,6 +25,7 @@
     "grunt-contrib-csslint": "~0.1.2",
     "grunt-contrib-cssmin": "~0.6.1",
     "grunt-plato": "~0.2.1",
-    "leapjs": "0.2.0"
+    "leapjs": "0.2.0",
+    "grunt-jsdoc": "~0.4.0"
   }
 }

@@ -5,7 +5,7 @@ Use the Audio Input Analyser to receive real-time audio analysis of your compute
 
 You can find examples in the 'public' folder or at http://foldi.github.io/Audio-Input-Analyser/index.html
 
-To get started, reference the AudioInputAnalyzer.min.js file in a &lt;script&gt; in the &lt;head&gt; of your document. Create and initialize a new AudioController. The AudioController uses pubsub to broadcast when data is ready. Subscribe to the 'meter' event and pass a callback to handle the data. 
+To get started, reference the AudioInputAnalyzer.min.js file in a &lt;script&gt; in the &lt;head&gt; of your document. Create and initialize a new AudioController. The AudioController uses pubsub to broadcast when data is ready. Subscribe to the 'meter' event and pass a callback to handle the data.
 
 
 ```html
@@ -72,7 +72,7 @@ var BAND31 = [
 ```
 
 Building this project
-======
+------
 
 This project uses [Grunt](http://gruntjs.com). To build the project first install the node modules.
 

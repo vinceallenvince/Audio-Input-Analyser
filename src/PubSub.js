@@ -1,8 +1,16 @@
 /**
+ * PubSub namespace.
  * @namespace
  */
 var PubSub = {};
 
+/**
+ * Subscribes a callback to an event.
+ * @function subscribe
+ * @memberof PubSub
+ * @param {string} ev An event type.
+ * @param {Function} callback A function to call when the event is published.
+ */
 PubSub.subscribe = function (ev, callback) {
   // Create _callbacks object, unless it already exists
   var calls = this._callbacks || (this._callbacks = {});
@@ -13,6 +21,13 @@ PubSub.subscribe = function (ev, callback) {
   return this;
 };
 
+/**
+ * Publishes an event. Subscribed callbacks will be invoked. Pass an event
+ * name as the first argument. All other arguments will be passed to all
+ * invoked callbacks.
+ * @function publish
+ * @memberof PubSub
+ */
 PubSub.publish = function () {
   // Turn arguements into a real array
   var args = Array.prototype.slice.call(arguments, 0);

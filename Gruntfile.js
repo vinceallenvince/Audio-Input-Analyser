@@ -137,6 +137,14 @@ module.exports = function(grunt) {
           'reports': ['src/**/*.js'],
         }
       }
+    },
+    jsdoc : {
+        dist : {
+            src: ['src/*.js', 'README.md'],
+            options: {
+                destination: 'doc'
+            }
+        }
     }
   });
 
@@ -149,11 +157,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-csslint');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-plato');
+  grunt.loadNpmTasks('grunt-jsdoc');
 
   grunt.registerTask('default', ['cssmin', 'concat', 'copy:publicDev', 'copy:publicCSS']);
-  grunt.registerTask('release', ['jshint', 'cssmin', 'concat', 'uglify', 'copy:publicMin', 'copy:publicCSS', 'copy:versionCSS', 'copy:versionMinified', 'copy:versionDev', 'plato']);
+  grunt.registerTask('release', ['jshint', 'cssmin', 'concat', 'uglify', 'copy:publicMin', 'copy:publicCSS', 'copy:versionCSS', 'copy:versionMinified', 'copy:versionDev', 'plato', 'jsdoc']);
   grunt.registerTask('test', ['jshint', 'jasmine']);
   grunt.registerTask('lint', ['jshint']);
   grunt.registerTask('report', ['plato']);
+  grunt.registerTask('doc', ['jsdoc']);
 };
 
