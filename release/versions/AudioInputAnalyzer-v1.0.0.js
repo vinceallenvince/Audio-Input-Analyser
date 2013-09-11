@@ -1,4 +1,4 @@
-/*! AudioInputAnalyzer v1.0.0 - 2013-09-08 11:09:09 
+/*! AudioInputAnalyzer v1.0.0 - 2013-09-11 03:09:22 
  *  Vince Allen 
  *  Brooklyn, NY 
  *  vince@vinceallen.com 
