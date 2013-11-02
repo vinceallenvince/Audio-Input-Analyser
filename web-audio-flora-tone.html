@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='content-type' content='text/html; charset=UTF-8' />
+  <title>Audio Input Analyser</title>
+  <link href='css/Burner.min.css' rel='stylesheet' type='text/css' charset='utf-8' />
+  <link href='css/Flora.min.css' rel='stylesheet' type='text/css' charset='utf-8' />
+  <link href='css/AudioInputAnalyzer.min.css' rel='stylesheet' type='text/css' charset='utf-8' />
+  <script src='scripts/Burner.min.js' type='text/javascript' charset='utf-8'></script>
+  <script src='scripts/Flora.min.js' type='text/javascript' charset='utf-8'></script>
+  <script src='scripts/AudioInputAnalyzer.min.js' type='text/javascript' charset='utf-8'></script>
+  </head>
+  <body>
+    <script type='text/javascript' charset='utf-8'>
+
+      var world = new Burner.World(document.body, {
+        color: [0, 0, 0],
+        gravity: new Burner.Vector(),
+        c: 0
+      });
+
+      var palette = new Flora.ColorPalette();
+      palette.addColor({
+        min: 12,
+        max: 24,
+        startColor: [196, 213, 86],
+        endColor: [166, 183, 56]
+      }).addColor({
+        min: 12,
+        max: 24,
+        startColor: [56, 139, 126],
+        endColor: [26, 109, 96]
+      }).addColor({
+        min: 12,
+        max: 24,
+        startColor: [104, 233, 212],
+        endColor: [74, 203, 182]
+      }).addColor({
+        min: 12,
+        max: 24,
+        startColor: [233, 158, 104],
+        endColor: [203, 128, 74]
+      }).addColor({
+        min: 12,
+        max: 24,
+        startColor: [191, 75, 49],
+        endColor: [171, 55, 19]
+      });
+
+      var i, max, size, location, offset, attractorSize = 50, attractors = [], viewportPadding = 100, freqs = [
+            1000, 1300, 1600, 2000, 2500, 3200, 4000, 5100, 6400//, 8100, 10000
+          ];
+
+      Burner.System.init(function() {
+
+        var world = Burner.System.firstWorld();
+
+        for (i = 0, max = freqs.length; i < max; i++) {
+          location = new Burner.Vector(Burner.System.firstWorld().width / 2, Burner.System.firstWorld().height / 2);
+          offset = new Burner.Vector(1, 1);
+          offset.normalize();
+          offset.rotate(Flora.Utils.degreesToRadians(Burner.System.map(i, 0, freqs.length, 0, 360)));
+          offset.mult(Burner.System.firstWorld().height / 3);
+          location.add(offset);
+          attractors.push(this.add('Attractor', {
+            width: attractorSize,
+            height: attractorSize,
+            /*location: new Burner.Vector(Burner.System.map(i, 0, freqs.length - 1, viewportPadding, world.width - viewportPadding),
+                Burner.System.firstWorld().height / 2),*/
+            location: location,
+            G: 0,
+            Hz: freqs[i],
+            angAccel: 0,
+            angVel: 0,
+            color: [255, 242, 204],
+            borderWidth: attractorSize / 2,
+            borderStyle: 'double',
+            borderColor: [255, 255, 255],
+            boxShadowBlur: 30,
+            boxShadowSpread: 5,
+            boxShadowColor: [255, 242, 204],
+            opacity: 0,
+            zIndex: 50
+          }));
+          this.add('Point', {
+            width: attractorSize * 5,
+            height: 1,
+            borderStyle: 'none',
+            borderRadius: 0,
+            opacity: 0.5,
+            zIndex: 1,
+            parent: attractors[attractors.length - 1],
+            beforeStep: function() {
+              this.angle += Math.pow(this.parent.G, 2);
+              this.opacity = this.parent.opacity / 2;
+            }
+          });
+        }
+
+        // Lightning bugs
+        for (var i = 0; i < 50; i++) {
+          var bugSize = Burner.System.getRandomNumber(1, 20);
+          var location = new Burner.Vector(Burner.System.firstWorld().width / 2, Burner.System.firstWorld().height / 2);
+          var offset = new Burner.Vector(1, 1);
+          offset.normalize();
+          offset.rotate(Burner.System.getRandomNumber(0, 360));
+          offset.mult(Burner.System.getRandomNumber(10, 50));
+          location.add(offset);
+          var agent = this.add('Agent', {
+            location: location,
+            width: bugSize,
+            height: bugSize,
+            mass: bugSize * 2,
+            opacity: 1,
+            flocking: true,
+            color: [255, 242, 204],
+            borderRadius: 100,
+            borderWidth: bugSize / 2,
+            borderStyle: 'double',
+            borderColor: palette.getColor(),
+            boxShadowBlur: 30,
+            boxShadowSpread: 5,
+            boxShadowColor: [255, 242, 204],
+            pulseRate: Burner.System.getRandomNumber(1, 100, true) * 0.003,
+            zIndex: 100,
+            beforeStep: function() {
+              var val = Math.sin(Burner.System.clock * this.pulseRate);
+              this.opacity = Burner.System.map(val, -1, 1, 0.3, 1);
+            }
+          });
+        }
+      }, world);
+
+
+
+      //
+
+      var audioController = new AudioInputAnalyzer.AudioController();
+      audioController.init();
+
+      var channel, viewportSize = audioController.getViewportSize();
+
+      for (i = 0; i < 2; i++) {
+        channel = document.createElement('div');
+        channel.className = 'channel ' + (!i ? 'left' : 'right');
+        channel.id = 'channel' + (i + 1);
+        document.body.appendChild(channel);
+      }
+
+      var channelLeft = document.getElementById('channel1'),
+          channelRight = document.getElementById('channel2');
+
+      AudioInputAnalyzer.PubSub.subscribe('meter', function(data) {
+
+        var freqOffset = 17;
+
+        for (var i = 0, max = attractors.length; i < max; i++) {
+          if (data.BAND31Array1[i + freqOffset] > 100) {
+            attractors[i].G = data.BAND31Array1[i + freqOffset] * 0.01;
+          } else {
+            attractors[i].G = 0;
+          }
+          attractors[i].opacity = Burner.System.map(data.BAND31Array1[i + freqOffset], 0, 255, 0, 1);
+        }
+
+      });
+
+    </script>
+  </body>
+</html>
